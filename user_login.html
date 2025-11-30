@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login - CyberServe</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-globe"></i>
+                <span>CyberServe</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="index.html#services" class="nav-link">Services</a></li>
+                <li class="nav-item"><a href="index.html#charges" class="nav-link">Charges</a></li>
+                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Form -->
+    <div class="form-container">
+        <h2><i class="fas fa-sign-in-alt"></i> User Login</h2>
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter your password">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Login</button>
+        </form>
+
+        <p style="text-align: center; margin-top: 1.5rem;">
+            Don't have an account? <a href="user_signup.html" style="color: #667eea; text-decoration: none; font-weight: bold;">Sign Up Here</a>
+        </p>
+
+        <p style="text-align: center; margin-top: 1rem;">
+            <a href="admin_login.html" style="color: #667eea; text-decoration: none;">Admin Login</a>
+        </p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 CyberServe. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Validate email
+            if (!validateEmail(email)) {
+                showNotification('Please enter a valid email address', 'error');
+                return;
+            }
+
+            // Validate password
+            if (password.length < 6) {
+                showNotification('Password must be at least 6 characters', 'error');
+                return;
+            }
+
+            // For demo: Store login info in localStorage
+            const users = JSON.parse(localStorage.getItem('cyberserve_users')) || [];
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                showNotification('Login successful! Redirecting...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'user_dashboard.html';
+                }, 1500);
+            } else {
+                showNotification('Invalid email or password', 'error');
+            }
+        }
+    </script>
+</body>
+</html>

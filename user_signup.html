@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Signup - CyberServe</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-globe"></i>
+                <span>CyberServe</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="index.html#services" class="nav-link">Services</a></li>
+                <li class="nav-item"><a href="index.html#charges" class="nav-link">Charges</a></li>
+                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Signup Form -->
+    <div class="form-container">
+        <h2><i class="fas fa-user-plus"></i> User Signup</h2>
+        <form id="signupForm" onsubmit="handleSignup(event)">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required placeholder="Enter your full name">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email">
+            </div>
+
+            <div class="form-group">
+                <label for="mobile">Mobile Number</label>
+                <input type="tel" id="mobile" name="mobile" required placeholder="Enter 10-digit mobile number">
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address</label>
+                <textarea id="address" name="address" required placeholder="Enter your address"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter password (min 6 characters)">
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Create Account</button>
+        </form>
+
+        <p style="text-align: center; margin-top: 1.5rem;">
+            Already have an account? <a href="user_login.html" style="color: #667eea; text-decoration: none; font-weight: bold;">Login Here</a>
+        </p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 CyberServe. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        function handleSignup(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const mobile = document.getElementById('mobile').value;
+            const address = document.getElementById('address').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Validate email
+            if (!validateEmail(email)) {
+                showNotification('Please enter a valid email address', 'error');
+                return;
+            }
+
+            // Validate phone
+            if (!validatePhone(mobile)) {
+                showNotification('Please enter a valid 10-digit mobile number', 'error');
+                return;
+            }
+
+            // Validate password
+            if (password.length < 6) {
+                showNotification('Password must be at least 6 characters', 'error');
+                return;
+            }
+
+            // Check if passwords match
+            if (password !== confirmPassword) {
+                showNotification('Passwords do not match', 'error');
+                return;
+            }
+
+            // Check if user already exists
+            const users = JSON.parse(localStorage.getItem('cyberserve_users')) || [];
+            if (users.find(u => u.email === email)) {
+                showNotification('Email already registered', 'error');
+                return;
+            }
+
+            // Generate User ID
+            const userId = 'U' + (1000 + users.length + 1);
+
+            // Create new user
+            const newUser = {
+                userId: userId,
+                name: name,
+                email: email,
+                mobile: mobile,
+                address: address,
+                password: password,
+                createdAt: new Date().toISOString()
+            };
+
+            // Save user
+            users.push(newUser);
+            localStorage.setItem('cyberserve_users', JSON.stringify(users));
+
+            showNotification('Account created successfully! Redirecting to login...', 'success');
+            setTimeout(() => {
+                window.location.href = 'user_login.html';
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

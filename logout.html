@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout - CyberServe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <script>
+        // Clear session data
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('currentAdmin');
+        
+        // Show logout message
+        document.body.innerHTML = `
+            <div style="display: flex; align-items: center; justify-content: center; height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <div style="background: white; padding: 3rem; border-radius: 0.5rem; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);">
+                    <h1 style="color: #667eea; margin-bottom: 1rem;">Logged Out Successfully</h1>
+                    <p style="color: #666; margin-bottom: 2rem;">You have been logged out. Redirecting to home page...</p>
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">✓</div>
+                </div>
+            </div>
+        `;
+        
+        // Redirect to home page after 2 seconds
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 2000);
+    </script>
+</body>
+</html>

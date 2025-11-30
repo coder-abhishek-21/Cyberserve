@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Request - CyberServe</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-globe"></i>
+                <span>CyberServe</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="user_dashboard.html" class="nav-link">Dashboard</a></li>
+                <li class="nav-item"><a href="logout.html" class="nav-link">Logout</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Service Request Form -->
+    <div class="form-container" style="max-width: 700px;">
+        <h2><i class="fas fa-file-invoice"></i> Online Service Request Form</h2>
+        <form id="serviceRequestForm" onsubmit="handleServiceRequest(event)">
+            <!-- User Info Section -->
+            <div style="background: #f9f9f9; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem;">
+                <h4 style="color: #667eea; margin-bottom: 1rem;">Your Information</h4>
+                
+                <div class="form-group">
+                    <label for="requestName">Name</label>
+                    <input type="text" id="requestName" name="requestName" required readonly placeholder="Auto-filled from profile">
+                </div>
+
+                <div class="form-group">
+                    <label for="requestUserId">User ID</label>
+                    <input type="text" id="requestUserId" name="requestUserId" required readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="requestEmail">Email</label>
+                    <input type="email" id="requestEmail" name="requestEmail" required readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="requestMobile">Contact Number</label>
+                    <input type="tel" id="requestMobile" name="requestMobile" required readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="requestAddress">Location / Address</label>
+                    <textarea id="requestAddress" name="requestAddress" required readonly></textarea>
+                </div>
+            </div>
+
+            <!-- Services Selection -->
+            <div style="background: #f9f9f9; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem;">
+                <h4 style="color: #667eea; margin-bottom: 1rem;">Select Services</h4>
+                <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">Check all services you need:</p>
+                
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="aadhaar" name="services" value="aadhaar_update">
+                        <label for="aadhaar">Aadhaar Update (₹50)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="pan" name="services" value="pan_card">
+                        <label for="pan">PAN Card (₹100)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="exam" name="services" value="online_exam_form">
+                        <label for="exam">Online Exam Form (₹80)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="printout" name="services" value="printout">
+                        <label for="printout">Printout (₹5)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="scan" name="services" value="scan_email">
+                        <label for="scan">Scan & Email (₹20)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="voter" name="services" value="voter_id">
+                        <label for="voter">Voter ID (₹70)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="bank" name="services" value="bank_kyc">
+                        <label for="bank">Bank KYC (₹60)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="train" name="services" value="train_ticket">
+                        <label for="train">Train Ticket (₹40)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="cert" name="services" value="online_cert">
+                        <label for="cert">Online Certificate (₹50)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="device" name="services" value="device_related">
+                        <label for="device">Device Related (₹100)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="payment" name="services" value="online_payment_help">
+                        <label for="payment">Payment Help (₹30)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="pdf" name="services" value="pdf_download">
+                        <label for="pdf">PDF Related (₹15)</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Amount -->
+            <div style="background: #e8f4f8; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; border-left: 4px solid #667eea;">
+                <h4 style="color: #333;">Total Amount: <span id="totalAmount" style="color: #667eea; font-size: 1.5rem;">₹0</span></h4>
+            </div>
+
+            <!-- Payment Section -->
+            <div style="background: #f9f9f9; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem;">
+                <h4 style="color: #667eea; margin-bottom: 1rem;">Payment Details</h4>
+                
+                <div style="text-align: center; margin-bottom: 1rem;">
+                    <img src="https://via.placeholder.com/200x200?text=UPI+QR+Code" alt="UPI QR Code" style="max-width: 200px; border-radius: 0.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <p style="margin-top: 1rem; color: #666; font-size: 0.9rem;"><strong>Please scan the QR code and make the payment</strong></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="paymentRef">Payment Reference Number / Transaction ID</label>
+                    <input type="text" id="paymentRef" name="paymentRef" required placeholder="Enter UPI Reference ID or Transaction ID">
+                </div>
+
+                <div class="form-group">
+                    <label for="paymentScreenshot">Payment Screenshot (Optional)</label>
+                    <input type="file" id="paymentScreenshot" name="paymentScreenshot" accept="image/*">
+                </div>
+            </div>
+
+            <!-- Additional Notes -->
+            <div class="form-group">
+                <label for="notes">Additional Notes / Special Requests</label>
+                <textarea id="notes" name="notes" placeholder="Any special instructions or requirements..."></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 1rem;">
+                <i class="fas fa-paper-plane"></i> Submit Service Request
+            </button>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 CyberServe. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        function loadUserInfo() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            
+            if (!currentUser) {
+                window.location.href = 'user_login.html';
+                return;
+            }
+
+            // Auto-fill user information
+            document.getElementById('requestName').value = currentUser.name;
+            document.getElementById('requestUserId').value = currentUser.userId;
+            document.getElementById('requestEmail').value = currentUser.email;
+            document.getElementById('requestMobile').value = currentUser.mobile;
+            document.getElementById('requestAddress').value = currentUser.address;
+        }
+
+        function handleServiceRequest(event) {
+            event.preventDefault();
+
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const checkboxes = document.querySelectorAll('input[name="services"]:checked');
+            const services = Array.from(checkboxes).map(cb => {
+                const labels = {
+                    'aadhaar_update': 'Aadhaar Update',
+                    'pan_card': 'PAN Card',
+                    'online_exam_form': 'Online Exam Form',
+                    'printout': 'Printout',
+                    'scan_email': 'Scan & Email',
+                    'voter_id': 'Voter ID',
+                    'bank_kyc': 'Bank KYC',
+                    'train_ticket': 'Train Ticket',
+                    'online_cert': 'Online Certificate',
+                    'device_related': 'Device Related',
+                    'online_payment_help': 'Payment Help',
+                    'pdf_download': 'PDF Related'
+                };
+                return labels[cb.value] || cb.value;
+            });
+
+            if (services.length === 0) {
+                showNotification('Please select at least one service', 'error');
+                return;
+            }
+
+            const paymentRef = document.getElementById('paymentRef').value;
+            if (!paymentRef.trim()) {
+                showNotification('Please enter payment reference number', 'error');
+                return;
+            }
+
+            // Calculate total
+            const totalText = document.getElementById('totalAmount').textContent;
+            const totalAmount = parseInt(totalText.replace('₹', ''));
+
+            // Create request
+            const requestId = 'REQ' + Date.now();
+            const newRequest = {
+                requestId: requestId,
+                userId: currentUser.userId,
+                userName: currentUser.name,
+                email: currentUser.email,
+                mobile: currentUser.mobile,
+                address: currentUser.address,
+                services: services,
+                totalAmount: totalAmount,
+                paymentReference: paymentRef,
+                notes: document.getElementById('notes').value,
+                status: 'Pending',
+                createdAt: new Date().toISOString()
+            };
+
+            // Save request
+            const allRequests = JSON.parse(localStorage.getItem('cyberserve_requests')) || [];
+            allRequests.push(newRequest);
+            localStorage.setItem('cyberserve_requests', JSON.stringify(allRequests));
+
+            showNotification('Service request submitted successfully! Your request ID is: ' + requestId, 'success');
+            setTimeout(() => {
+                window.location.href = 'user_dashboard.html';
+            }, 2000);
+        }
+
+        window.addEventListener('load', loadUserInfo);
+    </script>
+</body>
+</html>

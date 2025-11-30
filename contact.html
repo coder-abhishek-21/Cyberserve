@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - CyberServe</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-globe"></i>
+                <span>CyberServe</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="index.html#services" class="nav-link">Services</a></li>
+                <li class="nav-item"><a href="index.html#charges" class="nav-link">Charges</a></li>
+                <li class="nav-item"><a href="user_login.html" class="nav-link">Login</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contact Section -->
+    <div style="padding: 4rem 2rem; max-width: 1200px; margin: 0 auto;">
+        <h1 style="text-align: center; margin-bottom: 3rem; color: #333;">Contact Us</h1>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+            <!-- Contact Info Cards -->
+            <div class="dashboard-card">
+                <h3><i class="fas fa-map-marker-alt"></i> Address</h3>
+                <p style="margin-top: 1rem;">CyberServe Center<br>Main Street<br>Your City, State 12345</p>
+            </div>
+
+            <div class="dashboard-card">
+                <h3><i class="fas fa-phone"></i> Phone</h3>
+                <p style="margin-top: 1rem;">
+                    <strong>Main:</strong> +91 98765 43210<br>
+                    <strong>Support:</strong> +91 98765 43211
+                </p>
+            </div>
+
+            <div class="dashboard-card">
+                <h3><i class="fas fa-envelope"></i> Email</h3>
+                <p style="margin-top: 1rem;">
+                    <strong>General:</strong> info@cyberserve.com<br>
+                    <strong>Support:</strong> support@cyberserve.com
+                </p>
+            </div>
+
+            <div class="dashboard-card">
+                <h3><i class="fas fa-clock"></i> Working Hours</h3>
+                <p style="margin-top: 1rem;">
+                    <strong>Monday - Friday:</strong> 9:00 AM - 9:00 PM<br>
+                    <strong>Saturday:</strong> 9:00 AM - 8:00 PM<br>
+                    <strong>Sunday:</strong> 10:00 AM - 6:00 PM
+                </p>
+            </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="form-container">
+            <h2><i class="fas fa-paper-plane"></i> Send us a Message</h2>
+            <form id="contactForm" onsubmit="handleContactForm(event)">
+                <div class="form-group">
+                    <label for="contactName">Your Name</label>
+                    <input type="text" id="contactName" name="contactName" required placeholder="Enter your full name">
+                </div>
+
+                <div class="form-group">
+                    <label for="contactEmail">Email Address</label>
+                    <input type="email" id="contactEmail" name="contactEmail" required placeholder="Enter your email">
+                </div>
+
+                <div class="form-group">
+                    <label for="contactPhone">Phone Number</label>
+                    <input type="tel" id="contactPhone" name="contactPhone" placeholder="Enter your phone number">
+                </div>
+
+                <div class="form-group">
+                    <label for="contactSubject">Subject</label>
+                    <input type="text" id="contactSubject" name="contactSubject" required placeholder="What is this about?">
+                </div>
+
+                <div class="form-group">
+                    <label for="contactMessage">Message</label>
+                    <textarea id="contactMessage" name="contactMessage" required placeholder="Please describe your message in detail..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 CyberServe. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        function handleContactForm(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const phone = document.getElementById('contactPhone').value;
+            const subject = document.getElementById('contactSubject').value;
+            const message = document.getElementById('contactMessage').value;
+
+            // Validate email
+            if (!validateEmail(email)) {
+                showNotification('Please enter a valid email address', 'error');
+                return;
+            }
+
+            // Create contact message
+            const contactMessage = {
+                id: 'CONTACT' + Date.now(),
+                name: name,
+                email: email,
+                phone: phone,
+                subject: subject,
+                message: message,
+                createdAt: new Date().toISOString()
+            };
+
+            // Save to localStorage
+            const allMessages = JSON.parse(localStorage.getItem('cyberserve_contacts')) || [];
+            allMessages.push(contactMessage);
+            localStorage.setItem('cyberserve_contacts', JSON.stringify(allMessages));
+
+            showNotification('Thank you! Your message has been sent. We will contact you soon.', 'success');
+            document.getElementById('contactForm').reset();
+        }
+    </script>
+</body>
+</html>

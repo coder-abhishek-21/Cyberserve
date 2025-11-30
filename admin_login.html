@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - CyberServe</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-globe"></i>
+                <span>CyberServe</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="index.html#services" class="nav-link">Services</a></li>
+                <li class="nav-item"><a href="index.html#charges" class="nav-link">Charges</a></li>
+                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Login Form -->
+    <div class="form-container">
+        <h2><i class="fas fa-lock"></i> Admin Login</h2>
+        <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+            <div class="form-group">
+                <label for="adminEmail">Admin Email</label>
+                <input type="email" id="adminEmail" name="adminEmail" required placeholder="Enter admin email">
+            </div>
+
+            <div class="form-group">
+                <label for="adminPassword">Admin Password</label>
+                <input type="password" id="adminPassword" name="adminPassword" required placeholder="Enter admin password">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Admin Login</button>
+        </form>
+
+        <p style="text-align: center; margin-top: 1.5rem; color: #666; font-size: 0.9rem;">
+            <i class="fas fa-info-circle"></i> Demo Credentials:<br>
+            Email: admin@cyberserve.com<br>
+            Password: admin123
+        </p>
+
+        <p style="text-align: center; margin-top: 1.5rem;">
+            <a href="user_login.html" style="color: #667eea; text-decoration: none;">User Login</a>
+        </p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 CyberServe. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Initialize admin account if not exists
+        function initializeAdmin() {
+            const admins = JSON.parse(localStorage.getItem('cyberserve_admins')) || [];
+            if (admins.length === 0) {
+                const adminAccount = {
+                    adminId: 'ADMIN001',
+                    name: 'CyberServe Admin',
+                    email: 'admin@cyberserve.com',
+                    password: 'admin123',
+                    mobile: '9876543210',
+                    address: 'CyberServe Center, Main Street',
+                    centerTiming: '9:00 AM - 9:00 PM',
+                    createdAt: new Date().toISOString()
+                };
+                admins.push(adminAccount);
+                localStorage.setItem('cyberserve_admins', JSON.stringify(admins));
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', initializeAdmin);
+
+        function handleAdminLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+
+            // Validate email
+            if (!validateEmail(email)) {
+                showNotification('Please enter a valid email address', 'error');
+                return;
+            }
+
+            // Check admin credentials
+            const admins = JSON.parse(localStorage.getItem('cyberserve_admins')) || [];
+            const admin = admins.find(a => a.email === email && a.password === password);
+
+            if (admin) {
+                localStorage.setItem('currentAdmin', JSON.stringify(admin));
+                showNotification('Admin login successful! Redirecting...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'admin_dashboard.html';
+                }, 1500);
+            } else {
+                showNotification('Invalid admin email or password', 'error');
+            }
+        }
+    </script>
+</body>
+</html>
